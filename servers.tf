@@ -1,10 +1,28 @@
+/*
 variable "components" {
   default=["frontend","cart","catalogue"]
 }
+*/
 
-variable "instance_type"{
-  default="t2.small"
+variable "components" {
+  default={
+    frontend={
+      name="frontend"
+      instance_type="t2.small"
+    }
+    cart={
+      name="cart"
+      instance_type="t2.small"
+    }
+    catalogue={
+      name="catalogue"
+      instance_type="t2.small"
+    }
+  }
 }
+/*variable "instance_type"{
+  default="t2.small"
+}*/
 data "aws_ami" "centos" {
   most_recent = true
   owners = ["973714476881"]
@@ -16,13 +34,14 @@ data "aws_security_group" "allow-all" {
 
 
 resource "aws_instance" "instance" {
-  count=length(var.components)
+  for_each = var.components
   ami           = data.aws_ami.centos.image_id
-  instance_type = var.instance_type
+  instance_type = each.value["instance_type"]
   vpc_security_group_ids = [ data.aws_security_group.allow-all.id ]
 
   tags = {
-    Name = var.components[count.index]
+
+    Name=each.value["name"]
   }
 }
 

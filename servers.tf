@@ -26,10 +26,11 @@ resource "aws_instance" "instance" {
   }
 }
 
+/*
 resource "aws_route53_record" "routerecords" {
   zone_id = "Z0849970P5LI08J61JCE"
   name    = "${var.components[count.index]}-dev.naveendevops.tech"
   type    = "A"
   ttl     = 30
   records = ["aws_instance.${var.components[count.index]}.private_ip" ]
-}
+}*/

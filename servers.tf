@@ -4,33 +4,12 @@ variable "components" {
 }
 */
 
-variable "components" {
-  default={
-    frontend={
-      name="frontend"
-      instance_type="t2.small"
-    }
-    cart={
-      name="cart"
-      instance_type="t2.small"
-    }
-    catalogue={
-      name="catalogue"
-      instance_type="t2.small"
-    }
-  }
-}
+
+
 /*variable "instance_type"{
   default="t2.small"
 }*/
-data "aws_ami" "centos" {
-  most_recent = true
-  owners = ["973714476881"]
-}
 
-data "aws_security_group" "allow-all" {
-  name="allow-all"
-}
 
 
 resource "aws_instance" "instance" {
@@ -49,7 +28,7 @@ resource "aws_instance" "instance" {
 resource "aws_route53_record" "routerecords" {
   for_each = var.components
   zone_id = "Z0849970P5LI08J61JCE"
-  name    = "${each.value["name"]}-dev.naveendevops.tech"
+  name    = "${each.value["name"]}-${var.env}.naveendevops.tech"
   type    = "A"
   ttl     = 30
   records = [aws_instance.instance[each.value["name"]].private_ip]

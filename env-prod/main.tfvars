@@ -30,7 +30,7 @@ app_servers = {
   }
 }
 
-env = "dev"
+env = "prod"
 
 database_servers = {
   rabbitmq = {
